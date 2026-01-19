@@ -172,3 +172,4 @@ sortButtons.forEach((button) => {
 
 // Initialize: default display (all recipes, no sort)
 updateDisplay();
+
