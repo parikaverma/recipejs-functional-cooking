@@ -125,4 +125,50 @@ const applySort = (recipesList, sortMode) => {
     }
 
     if (sortMode === 'time') {
-        return copy.sort((a, b) => a.time - b.…
+        return copy.sort((a, b) => a.time - b.time);
+    }
+
+    return copy;
+};
+
+// Central function: combines filter + sort then renders
+const updateDisplay = () => {
+    const filtered = applyFilter(recipes, currentFilter);
+    const sorted = applySort(filtered, currentSort);
+    renderRecipes(sorted);
+};
+
+// Helper: update active button styles
+const setActiveButton = (buttons, activeAttr, value) => {
+    buttons.forEach((btn) => {
+        if (btn.getAttribute(activeAttr) === value) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+};
+
+// Event listeners for filters
+filterButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+        const selectedFilter = button.getAttribute('data-filter');
+        currentFilter = selectedFilter;
+        setActiveButton(filterButtons, 'data-filter', selectedFilter);
+        updateDisplay();
+    });
+});
+
+// Event listeners for sorters
+sortButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+        const selectedSort = button.getAttribute('data-sort');
+        // toggle sort off if same button clicked again
+        currentSort = currentSort === selectedSort ? null : selectedSort;
+        setActiveButton(sortButtons, 'data-sort', currentSort);
+        updateDisplay();
+    });
+});
+
+// Initialize: default display (all recipes, no sort)
+updateDisplay();
